@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>物资后台管理</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.6.8/css/layui.css">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<ul class="layui-nav layui-bg-green" style="height: 65px;background-color: #5bba5b !important;">
+    <li class="layui-nav-item"><a th:href="@{/index.html}" style="font-size: 25px">Freecycle &nbsp;<img
+            style="width: 60px;height: 45px"
+            src="/images/614.png"></img></a>
+    </li>
+    <li class="layui-nav-item" style="margin-left: 1350px;font-size: 15px">
+        你好啊！管理员
+    </li>
+    <li class="layui-nav-item" lay-unselect="">
+        <a href="javascript:;"><img th:src="@{/images/goods/portrait.png}" class="layui-nav-img"></a>
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{/index.html}">回到主页</a></dd>
+            <hr>
+            <dd style="text-align: center;"><a th:href="@{/adminOut}">退出</a></dd>
+        </dl>
+    </li>
+</ul>
+
+<div style="height: 195px">
+    <div style="margin-left: 600px;margin-top: 17px;width: 260px;height: 60px;">
+        <div>
+            <img src="/images/introtop.png" alt="">
+        </div>
+        <div style="width: 700px;margin-left: 28px">
+            <p>欢迎来到 <span style="color: #3aa53a;font-size: 18px"><strong>Freecycle Network ™！</strong></span>
+                的后台管理页面，我们是一个完全非营利的组织，管理员的职责是审核捐赠物资的真实性和合法性，还有对申领资格的核实。
+                如果我们正确行使管理权力，那么这完全是重复使用和让好东西远离垃圾填埋场的好方式。
+            </p>
+        </div>
+        <div>
+            <img th:src="@{images/introbottom.png}" alt="">
+        </div>
+    </div>
+</div>
+
+
+<div class="layui-bg-gray" style="padding: 30px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md3" th:each="goods,stat:${page.records}">
+            <div class="layui-panel" style="height: 540px">
+                <div style="padding: 10px 20px;">
+                    <!--categoryStart-->
+                    <div style="margin: auto;width: 400px">
+                        <div>
+                            <img style="width: 370px;height: 350px;margin-left: 26px"
+                                 th:src="@{/images/goods/{photo}(photo=${goods.photo})}">
+                        </div>
+                        <div style="height:30px;margin-top: 10px;text-align: center;font-size: 20px;color: #3aa53a">
+                            <span th:text="${goods.category}"></span>
+                        </div>
+                        <div style="margin-top: 5px;margin-left: 28px;width: 355px;height: 60px">
+                            <span style="font-size: 16px">物品详情:</span>
+                            <span style="font-size: 15px" th:text="${goods.description}"></span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 0">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                捐赠审核:
+                            </span>
+                            <span style="margin-left: 105px"><a
+                                    th:href="@{/goodsAdopt(goodsId=${goods.goodsId},pn=${page.current})}">
+                            <button style="font-size: 16px;color: #3aa53a !important;"
+                                    class="layui-btn layui-btn-primary layui-btn-radius">
+                                通过
+                            </button></a>
+                            </span>
+                            <span style="margin-left: 10px"><a
+                                    th:href="@{/goodsRevoke(goodsId=${goods.goodsId},pn=${page.current})}">
+                            <button style="font-size: 16px;color: #3aa53a !important;"
+                                    class="layui-btn layui-btn-primary layui-btn-radius">
+                                撤回
+                            </button></a>
+                            </span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 2">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                领取审核: &nbsp;
+                                 <a style="font-size: 18px;color: #dbdb38" th:href="@{/auditUser(goodsId=${goods.goodsId})}">
+                                     查看申领人
+                                 </a>
+                            </span>
+                            <span style="margin-left: 18px"><a
+                                    th:href="@{/receiveAdopt(goodsId=${goods.goodsId},pn=${page.current})}">
+                            <button style="font-size: 16px;color: #3aa53a !important;"
+                                    class="layui-btn layui-btn-primary layui-btn-radius">
+                                通过
+                            </button></a>
+                            </span>
+                            <span style="margin-left: 10px"><a
+                                    th:href="@{/receiveRevoke(goodsId=${goods.goodsId},pn=${page.current})}">
+                            <button style="font-size: 16px;color: #3aa53a !important;"
+                                    class="layui-btn layui-btn-primary layui-btn-radius">
+                                撤回
+                            </button></a>
+                            </span>
+                        </div>
+                    </div>
+                    <!--categoryEnd-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 15px">
+        <div style="font-size: 18px">当前第 <span style="color: #5bba5b">[[${page.current}]]</span> 页 总计
+            <span style="color: #5bba5b">[[${page.pages}]]</span> 页 共
+            <span style="color: #5bba5b">[[${page.total}]]</span> 条记录
+
+            <!--            页码开始-->
+            <span style="margin-left: 1300px">
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <a class="" th:href="@{/admin.html(pn=${page.current}-1)}">
+                        上一页
+                  </a>
+                </button>
+                <span th:class="${num == page.current}?active : '' "
+                      th:each="num:${#numbers.sequence(1,page.pages)}">
+                    <a th:href="@{/admin.html(pn=${num})}">[[${num}]]</a>
+                </span>
+                &nbsp;
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <i class="layui-icon layui-font-12">
+                      <a th:href="@{/admin.html(pn=${page.current}+1)}">
+                          下一页
+                      </a>
+                  </i>
+                </button>
+            </span>
+            <!--            页码结束-->
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/layui.js}">
+</script>
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function (elem) {
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+
+        var rate = layui.rate;
+        //基础效果
+        rate.render({
+            elem: '#test1'
+        })
+    });
+</script>
+</body>
+</html>

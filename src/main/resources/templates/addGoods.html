@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人捐赠</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.6.8/css/layui.css">
+</head>
+<body>
+
+<ul class="layui-nav layui-bg-green" style="height: 65px;background-color: #5bba5b !important;">
+    <li class="layui-nav-item"><a th:href="@{/index.html}" style="font-size: 25px">Freecycle &nbsp;<img style="width: 60px;height: 45px"
+                                                                                                        src="/images/614.png"></img></a>
+    </li>
+    <li class="layui-nav-item" style="margin-left: 1350px;font-size: 15px">
+<!--        <span style="color: #622c98;font-size: 18px" th:text="${session.loginUser.userName}"></span>  感谢您的捐赠!-->
+    </li>
+    <li class="layui-nav-item" lay-unselect="">
+        <a href="javascript:;"><img th:src="@{/images/goods/portrait.png}" class="layui-nav-img"></a>
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{/user}">个人中心</a></dd>
+            <hr>
+            <dd style="text-align: center;"><a th:href="@{/login}">登录</a></dd>
+            <dd style="text-align: center;"><a th:href="@{/logout}">退出</a></dd>
+        </dl>
+    </li>
+</ul>
+
+
+<div style="height: 195px">
+    <div style="margin-left: 600px;margin-top: 17px;width: 260px;height: 60px;">
+        <div>
+            <img src="/images/introtop.png" alt="">
+        </div>
+        <div style="width: 700px;margin-left: 28px">
+            <p>欢迎来到 <span style="color: #3aa53a;font-size: 18px"><strong>Freecycle Network ™！</strong></span>
+                首先很感谢所有捐赠者对<span style="color: #3aa53a;font-size: 14px"><strong>Freecycle</strong></span>
+                支持。环保无大小，爱心有方向。 不论你捐赠的是什么， 捐的有多少，又是以什么样的形式到达所需人手中。
+                我们都相信学校的学弟们，在校的老师们都会感受到你们的温暖。同学们都是环境的隐形守护者，再一次感谢你们！
+            </p>
+        </div>
+        <div>
+            <img th:src="@{/images/introbottom.png}" alt="">
+        </div>
+    </div>
+</div>
+
+<!---->
+<form class="layui-form" th:action="@{/userAddGoods}" style="font-size: 16px" method="post" enctype="multipart/form-data">
+    <div class="layui-form-item">
+        <label class="layui-form-label">物品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="category" lay-verify="title" autocomplete="off" placeholder="请输入物品名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">物品描述</label>
+        <div class="layui-input-block">
+            <textarea name="description" placeholder="请描述下您的物品" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div style="margin-left: 33px">
+        <label for="exampleInputFile">物品图片 &nbsp;</label>
+        <input type="file" name="goodsImg" id="exampleInputFile">
+        <!--多文件multiple-->
+    </div>
+    <div class="layui-form-item" style="margin-top: 9px">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1"  style="background-color: #5bcd5b !important;">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!---->
+<!--<form th:action="@{/userAddGoods}" style="font-size: 16px" method="post" enctype="multipart/form-data">-->
+<!--    <input name="category" type="text">-->
+<!--    <input name="description" type="text">-->
+<!--    <input name="goodsImg" type="file">-->
+<!--    <button type="submit">-->
+<!--        tijiao-->
+<!--    </button>-->
+<!--</form>-->
+
+
+
+
+<script th:src="@{/js/layui.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function (elem) {
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+
+        var rate = layui.rate;
+        //基础效果
+        rate.render({
+            elem: '#test1'
+        })
+    });
+</script>
+
+</body>
+</html>

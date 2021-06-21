@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.6.8/css/layui.css">
+</head>
+<body>
+
+<ul class="layui-nav layui-bg-green" style="height: 65px;background-color: #5bba5b !important;">
+    <li class="layui-nav-item"><a th:href="@{/index.html}" style="font-size: 25px">Freecycle &nbsp;<img style="width: 60px;height: 45px"
+                                                                                                        src="/images/614.png"></img></a>
+    </li>
+    <li class="layui-nav-item" style="margin-left: 1350px;font-size: 15px">
+        你好啊！<span th:if="${loginUser} ne null">[[${loginUser.userName}]]</span>
+    </li>
+    <li class="layui-nav-item" lay-unselect="">
+        <a href="javascript:;"><img th:src="@{/images/goods/portrait.png}" class="layui-nav-img"></a>
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{/index.html}">返回主页</a></dd>
+            <dd><a th:href="@{/userAddPage}">捐赠物品</a></dd>
+            <hr>
+            <dd style="text-align: center;"><a th:href="@{/login}">登录</a></dd>
+            <dd style="text-align: center;"><a th:href="@{/logout}">退出</a></dd>
+        </dl>
+    </li>
+</ul>
+
+
+<div style="height: 195px">
+    <div style="margin-left: 600px;margin-top: 17px;width: 260px;height: 60px;">
+        <div>
+            <img src="/images/introtop.png" alt="">
+        </div>
+        <div style="width: 700px;margin-left: 28px">
+            <p>欢迎来到 <span style="color: #3aa53a;font-size: 18px"><strong>Freecycle Network ™！</strong></span>
+                我们是一个完全非营利的组织，
+                目的是在自己的校园内免费赠送和获取物品的人们组成。这完全是关于重复使用和
+                让好东西远离垃圾填埋场。资格是免费的。现在，您还可以建立自己的
+                小型个人朋友圈，与朋友一起赠送和借出物品！
+            </p>
+        </div>
+        <div>
+            <img th:src="@{/images/introbottom.png}" alt="">
+        </div>
+    </div>
+</div>
+
+
+<div style="height: 40px;margin-left: 28px">
+    <span style="color: #3aa53a;font-size: 20px">用户捐赠详情</span>
+</div>
+<!--捐赠物资开始-->
+<div class="layui-bg-gray" style="padding: 30px;" th:if="${donation.records.size()} ne 0">
+    <div class="layui-row layui-col-space15" >
+        <div class="layui-col-md3" th:each="goods,stat:${donation.records}">
+            <div class="layui-panel" style="height: 520px" >
+                <div style="padding: 10px 20px;">
+                    <!--categoryStart-->
+                    <div style="margin: auto;width: 400px">
+                        <div >
+                            <img style="width: 350px;height: 350px;margin-left: 26px" th:src="@{/images/goods/{photo}(photo=${goods.photo})}" >
+                        </div>
+                        <div style="height:30px;margin-top: 10px;text-align: center;font-size: 20px;color: #3aa53a">
+                            <span th:text="${goods.category}"></span>
+                        </div>
+                        <div  style="margin-top: 5px;margin-left: 28px;width: 355px;height: 60px">
+                            <span style="font-size: 16px">物品详情:</span>
+                            <span style="font-size: 15px" th:text="${goods.description}"></span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 0">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                捐赠审核中:
+                            </span>
+                            <span style="margin-left: 190px"><a th:href="@{/goodsDelete(goodsId=${goods.goodsId})}" >
+                            <button style="font-size: 16px;color: #3aa53a !important;" class="layui-btn layui-btn-primary layui-btn-radius">
+                                撤回
+                            </button></a>
+                            </span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 1">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                感谢您的捐赠！
+                            </span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 2">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                领取审核中
+                            </span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 3">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                已被领取
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--categoryEnd-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 15px">
+        <div style="font-size: 18px">当前第 <span style="color: #5bba5b">[[${donation.current}]]</span> 页 总计
+            <span style="color: #5bba5b">[[${donation.pages}]]</span> 页 共
+            <span style="color: #5bba5b">[[${donation.total}]]</span> 条记录
+
+            <!--            页码开始-->
+            <span style="margin-left: 1300px">
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;"><a href=""></a>
+                  <a class="" th:href="@{/user(pn=${donation.current}-1,donationId=${loginUser.id})}">
+                        上一页
+                  </a>
+                </button>
+                <span th:class="${num == donation.current}?active : '' "
+                      th:each="num:${#numbers.sequence(1,donation.pages)}">
+                    <a th:href="@{/user(pn=${num})}">[[${num}]]</a>
+                </span>
+                &nbsp;
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <i class="layui-icon layui-font-12">
+                      <a th:href="@{/user(pn=${donation.current}+1,donationId=${loginUser.id})}">
+                          下一页
+                      </a>
+                  </i>
+                </button>
+            </span>
+            <!--            页码结束-->
+        </div>
+    </div>
+</div>
+<div class="layui-bg-gray" style="padding: 30px;" th:if="${donation.records.size()} eq 0">
+    <div class="layui-row layui-col-space15" >
+        <div class="layui-col-md12">
+            <div class="layui-panel" style="height: 520px" >
+                <div style="padding: 10px 20px;">
+                    <!--categoryStart-->
+                    <div style="align-content: center;font-size: 16px">
+                        <span style="color: #ca0dca;font-size: 18px">
+                            [[${loginUser.userName}]] !
+                        </span>
+                        快去寻找闲置的物资，来捐赠吧！
+                    </div>
+                    <!--categoryEnd-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 15px">
+        <div style="font-size: 18px">当前第 <span style="color: #5bba5b">[[${donation.current}]]</span> 页 总计
+            <span style="color: #5bba5b">[[${donation.pages}]]</span> 页 共
+            <span style="color: #5bba5b">[[${donation.total}]]</span> 条记录
+
+            <!--            页码开始-->
+            <span style="margin-left: 1300px">
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <a class="" th:href="@{/user(pn=${donation.current}-1,donationId=${loginUser.id})}">
+                        上一页
+                  </a>
+                </button>
+                <span th:class="${num == donation.current}?active : '' "
+                      th:each="num:${#numbers.sequence(1,donation.pages)}">
+                    <a th:href="@{/user(pn=${num})}">[[${num}]]</a>
+                </span>
+                &nbsp;
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <i class="layui-icon layui-font-12">
+                      <a th:href="@{/user(pn=${donation.current}+1,donationId=${loginUser.id})}">
+                          下一页
+                      </a>
+                  </i>
+                </button>
+            </span>
+            <!--            页码结束-->
+        </div>
+    </div>
+</div>
+<!--捐赠物资结束-->
+
+<div style="height: 40px;margin-left: 28px">
+    <p style="color: #3aa53a;font-size: 20px;align-content: center">用户领取详情</p>
+</div>
+<!--领取物资开始-->
+<div class="layui-bg-gray" style="padding: 30px;" th:if="${receive.records.size()} ne 0">
+    <div class="layui-row layui-col-space15" >
+        <div class="layui-col-md3" th:each="goods,stat:${receive.records}">
+            <div class="layui-panel" style="height: 520px" >
+                <div style="padding: 10px 20px;">
+                    <!--categoryStart-->
+                    <div style="margin: auto;width: 400px">
+                        <div >
+                            <img style="width: 350px;height: 350px;margin-left: 26px" th:src="@{/images/goods/{photo}(photo=${goods.photo})}" >
+                        </div>
+                        <div style="height:30px;margin-top: 10px;text-align: center;font-size: 20px;color: #3aa53a">
+                            <span th:text="${goods.category}"></span>
+                        </div>
+                        <div  style="margin-top: 5px;margin-left: 28px;width: 355px;height: 60px">
+                            <span style="font-size: 16px">物品详情:</span>
+                            <span style="font-size: 15px" th:text="${goods.description}"></span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 2">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                正在审核:
+                            </span>
+                            <span style="margin-left: 190px"><a th:href="@{/goodsRemove(goodsId=${goods.goodsId})}" >
+                            <button style="font-size: 16px;color: #3aa53a !important;" class="layui-btn layui-btn-primary layui-btn-radius">
+                                撤回
+                            </button></a>
+                            </span>
+                        </div>
+                        <div style="margin-top: 8px" th:if="${goods.state} eq 3">
+                            <span style="margin-left:25px;font-size: 19px;color: #3aa53a">
+                                领取成功！
+                            </span>
+                        </div>
+                    </div>
+                    <!--categoryEnd-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 15px">
+        <div style="font-size: 18px">当前第 <span style="color: #5bba5b">[[${receive.current}]]</span> 页 总计
+            <span style="color: #5bba5b">[[${receive.pages}]]</span> 页 共
+            <span style="color: #5bba5b">[[${receive.total}]]</span> 条记录
+
+            <!--            页码开始-->
+            <span style="margin-left: 1300px">
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <a class="" th:href="@{/user(pn=${receive.current}-1,donationId=${loginUser.id})}">
+                        上一页
+                  </a>
+                </button>
+                <span th:class="${num == donation.current}?active : '' "
+                      th:each="num:${#numbers.sequence(1,donation.pages)}">
+                    <a th:href="@{/user(pn=${num})}">[[${num}]]</a>
+                </span>
+                &nbsp;
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <i class="layui-icon layui-font-12">
+                      <a th:href="@{/user(pn=${receive.current}+1,donationId=${loginUser.id})}">
+                          下一页
+                      </a>
+                  </i>
+                </button>
+            </span>
+            <!--            页码结束-->
+        </div>
+    </div>
+</div>
+<div class="layui-bg-gray" style="padding: 30px;" th:if="${receive.records.size()} eq 0">
+    <div class="layui-row layui-col-space15" >
+        <div class="layui-col-md12">
+            <div class="layui-panel" style="height: 520px" >
+                <div style="padding: 10px 20px;">
+                    <!--categoryStart-->
+                    <div style="align-content: center;font-size: 16px">
+                        <span style="color: #ca0dca;font-size: 18px">
+                            [[${loginUser.userName}]] !
+                        </span>
+                        您还未领取需要的物资，快去主页看看吧！
+                    </div>
+                    <!--categoryEnd-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 15px">
+        <div style="font-size: 18px">当前第 <span style="color: #5bba5b">[[${donation.current}]]</span> 页 总计
+            <span style="color: #5bba5b">[[${donation.pages}]]</span> 页 共
+            <span style="color: #5bba5b">[[${donation.total}]]</span> 条记录
+
+            <!--            页码开始-->
+            <span style="margin-left: 1300px">
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <a class="" th:href="@{/user(pn=${donation.current}-1,donationId=${loginUser.id})}">
+                        上一页
+                  </a>
+                </button>
+                <span th:class="${num == donation.current}?active : '' "
+                      th:each="num:${#numbers.sequence(1,donation.pages)}">
+                    <a th:href="@{/user(pn=${num})}">[[${num}]]</a>
+                </span>
+                &nbsp;
+                <button type="button" class="layui-btn layui-btn-sm" style="background-color: #5bba5b !important;">
+                  <i class="layui-icon layui-font-12">
+                      <a th:href="@{/user(pn=${donation.current}+1,donationId=${loginUser.id})}">
+                          下一页
+                      </a>
+                  </i>
+                </button>
+            </span>
+            <!--            页码结束-->
+        </div>
+    </div>
+</div>
+<!--领取物资结束-->
+
+<script th:src="@{/js/layui.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function (elem) {
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+
+        var rate = layui.rate;
+        //基础效果
+        rate.render({
+            elem: '#test1'
+        })
+    });
+</script>
+
+</body>
+</html>

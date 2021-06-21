@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>Registration</title>
+    <!--注册表单验证开始-->
+    <script src="http://localhost:8080/myjs/jquery-1.7.2.js"></script>
+<!--    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
+    <script type="text/javascript">
+        // 页面加载完成之后
+        $(function () {
+
+            // 给注册绑定单击事件
+            $("#sub_btn").click(function () {
+                // 验证用户名：必须由字母，数字下划线组成，并且长度为5到12位
+                //1 获取用户名输入框里的内容
+                var usernameText = $("#username").val();
+                //2 创建正则表达式对象
+                // var usernamePatt = /^\w{2,12}$/;
+                var usernamePatt = /^[\u4e00-\u9fa5a-zA-Z\w]{2,12}$/;
+                // [\u4e00-\u9fa5]
+                //3 使用test方法验证
+                if (!usernamePatt.test(usernameText)) {
+                    //4 提示用户结果
+                    $("#errorMsg").text("用户名不合法！");
+
+                    return false;
+                }
+
+                // 验证密码：必须由字母，数字下划线组成，并且长度为5到12位
+                //1 获取用户名输入框里的内容
+                var passwordText = $("#password").val();
+                //2 创建正则表达式对象
+                var passwordPatt = /^\w{6,12}$/;
+                //3 使用test方法验证
+                if (!passwordPatt.test(passwordText)) {
+                    //4 提示用户结果
+                    $("#errorMsg").text("密码不合法！");
+
+                    return false;
+                }
+
+                // 验证确认密码：和密码相同
+                //1 获取确认密码内容
+                var repwdText = $("#repwd").val();
+                //2 和密码相比较
+                if (repwdText != passwordText) {
+                    //3 提示用户
+                    $("#errorMsg").text("确认密码和密码不一致！");
+
+                    return false;
+                }
+
+                // 邮箱验证：xxxxx@xxx.com
+                //1 获取邮箱里的内容
+                var emailText = $("#email").val();
+                //2 创建正则表达式对象
+                var emailPatt = /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/;
+                //3 使用test方法验证是否合法
+                if (!emailPatt.test(emailText)) {
+                    //4 提示用户
+                    $("#errorMsg").text("邮箱格式不合法！");
+
+                    return false;
+                }
+
+                // 去掉错误信息
+                $("#errorMsg").text("");
+
+            });
+
+        });
+
+    </script>
+    <!--注册表单验证结束-->
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="login-body">
+
+<div class="container">
+
+    <form class="form-signin" action="/user/register" method="post">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">新用户注册</h1>
+            <img src="images/mylogo.png" alt=""/>
+        </div>
+
+        <div class="login-wrap">
+
+<!--            <p>输入您的帐户详细信息如下</p>-->
+            <p id="errorMsg" style="float: left;color: red">请填写您的相关信息</p><br>
+            <input type="hidden" name="id" value="1">
+            <input type="text" id="username" name="userName" placeholder="用户名" class="form-control">
+            <input type="password" id="password" name="password" placeholder="密码" class="form-control">
+            <input type="password" id="repwd" placeholder="确认密码" class="form-control">
+            <input type="text" id="email" name="email" placeholder="联系邮箱" class="form-control">
+            <label class="checkbox">
+                <input type="checkbox" value="agree this condition"> 我同意服务条款和隐私政策
+            </label>
+            <button id="sub_btn"  type="submit" class="btn btn-lg btn-login btn-block">
+                <i class="fa fa-check"></i>
+            </button>
+
+            <div class="registration">
+                已经注册。
+                <a th:href="@{/login}" class="">
+                    去登陆
+                </a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+
+</body>
+</html>
