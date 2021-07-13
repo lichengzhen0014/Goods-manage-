@@ -11,6 +11,8 @@ import org.thymeleaf.context.Context;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -86,4 +88,5 @@ public class MailServiceTest {
         String path = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\images\\goods\\";
         System.out.println(path);
     }
+
 }
